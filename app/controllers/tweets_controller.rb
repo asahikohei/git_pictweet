@@ -1,4 +1,6 @@
 class TweetsController < ApplicationController
+  before_action :redirect_to_index, except: :index
+  
     def index
       @tweets = Tweet.all
     end
@@ -13,6 +15,13 @@ class TweetsController < ApplicationController
     
     private
     def create_params
-      params.permit(:name, :text, :image)
+      params.permit(:name, :text, :image, :nickname)
+    end
+    
+    private
+    def redirect_to_index
+      unless user_signed_in?
+        redirect_to action: :index
+      end
     end
 end
