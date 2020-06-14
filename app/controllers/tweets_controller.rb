@@ -13,6 +13,13 @@ class TweetsController < ApplicationController
       redirect_to :root
     end
     
+    def destroy
+      tweet = Tweet.find(params[:id])
+      if current_user.id == tweet.user_id
+        tweet.destroy
+      end
+    end
+    
     private
     def create_params
       params.permit(:text, :image).merge(user_id: current_user.id)
