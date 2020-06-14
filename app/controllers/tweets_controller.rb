@@ -9,7 +9,7 @@ class TweetsController < ApplicationController
     end
     
     def create
-      Tweet.create(create_params)
+      Tweet.create(tweet_params)
       redirect_to :root
     end
     
@@ -20,8 +20,20 @@ class TweetsController < ApplicationController
       end
     end
     
+    def edit
+      @tweet = Tweet.find(params[:id])
+    end
+    
+    def update
+      @tweet = Tweet.find(params[:id])
+      if @tweet.user_id == current_user.id
+        @tweet.update(tweet_params)
+      end
+    end
+    
+    
     private
-    def create_params
+    def tweet_params
       params.permit(:text, :image).merge(user_id: current_user.id)
     end
     
